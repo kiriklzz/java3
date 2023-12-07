@@ -1,16 +1,21 @@
 package lab6;
-
-import java.lang.reflect.Array;
+import java.util.NoSuchElementException;
 
 public class Stack<T> {
+    private T[] data;
+    private final int maxSize;
+    private int top;
+
     public Stack(int maxSize) {
-        data = (T[]) new Object[maxSize];
         this.maxSize = maxSize;
-        top = 0;
+        this.data = (T[]) new Object[maxSize];
+        this.top = 0;
     }
 
     public void push(T element) {
         if (top == maxSize) {
+            System.err.println("Стек полный");
+            throw new IllegalStateException("Стек полный");
         } else {
             data[top] = element;
             top += 1;
@@ -19,42 +24,45 @@ public class Stack<T> {
 
     public T pop() {
         if (top == 0) {
-            return null;
+            System.err.println("Стек пуст");
+            throw new NoSuchElementException("Стек пуст");
         } else {
             top -= 1;
             return data[top];
         }
     }
-
     public T peek() {
         if (top == 0) {
-            return null;
+            throw new NoSuchElementException("Стек пуст");
         } else {
             return data[top - 1];
         }
     }
     public void printStack() {
-        System.out.print("Stack: ");
-        for (int i = 0; i < top; i++) {
-            System.out.print(data[i] + " ");
+        if (top == 0) {
+            System.out.println("Стек пустой");
+        } else {
+            System.out.print("Стек: ");
+            for (int i = 0; i < top; i++) {
+                System.out.print(data[i] + " ");
+            }
+            System.out.println();
         }
-        System.out.println();
     }
+
+
 
     public static void main(String[] args) {
-        Stack<Integer> Stack = new Stack<>(7);
+        Stack<Integer> stack = new Stack<>(7);
 
-        Stack.push(1);
-        Stack.push(2);
-        Stack.push(3);
-        Stack.push(4);
-        Stack.printStack();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+        stack.push(5);
+        stack.printStack();
 
-        Stack.pop();
-        System.out.println("Верхний элемент стека после удаления элемента: " + Stack.peek());
+        stack.pop();
+        System.out.println("Верхний элемент стека после удаления элемента: " + stack.peek());
     }
-
-    private T[] data;
-    private final int maxSize;
-    private int top;
 }
